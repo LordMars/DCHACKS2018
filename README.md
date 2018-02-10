@@ -1,4 +1,5 @@
 # DCHACKS2018
+<<<<<<< HEAD
 
 To use: 
 
@@ -8,3 +9,6 @@ To use:
 
 
 
+=======
+Gideon's test
+>>>>>>> 3048ff85fe4ce3787c622f16a15ab875f22796a1
