@@ -50,8 +50,14 @@ void isDefining(ifstream &myfile, ofstream &outfile){
     bool found = false;
 
     while(myfile){
+        /*if(curword.back() == ','){
+            string secclause;//holds the second clause within the comma list
+            while(myfile){
+                
+            }
+        }*/
         if(curword.back() == '!' || curword.back() == '.' || curword.back() == '?'){//if te
-            if(found == true && firsthalf.length() > 60 ){
+            if(found == true && firsthalf.length() > 60 && secondhalf.length() < 300){
                 outfile << firsthalf << "_______?" << endl;
                 outfile << secondhalf << endl << endl;
             }
@@ -62,6 +68,7 @@ void isDefining(ifstream &myfile, ofstream &outfile){
         }
         else if((curword == "is" || curword == "was" || curword == "are" || curword == "include") && found == false){//checks if any of these words exisits int eh sentence{
             myfile >> curword;
+            secondhalf += curword + " ";
             found = true;
         }
         else if(found == true){
