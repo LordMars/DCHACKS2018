@@ -9,21 +9,42 @@ using namespace std;
 void summarize(ifstream &myfile, unordered_map<string, int> &wordMap, unordered_map<string, int > &sentenceMap) {
 	string word = "";
 	string sentence = "";
-
+	int value = 0;
+	//get word values
 	while (myfile >> word)
 	{
+		if (word[word.length() - 1] == '.')
+		{
+			word = word.substr(0, (word.length() - 1));
+		}
 		if (wordMap.find(word) == wordMap.end()){ //Word not in wordmap. Therefore add it.
 			wordMap.insert({ word, 1 });
-			//sentence += word;
 		}
 		else{ //otherwise add the new key to the hashmap and set the value at 1
 			wordMap.at(word) += 1;
-			//sentence += word;
 		}
 	}
-	//sentenceMap(sentence);
+
+	myfile.clear();
+	myfile.seekg(0, ios::beg);
+	//get sentence values
+	while (myfile >> word) {
+		if (word[word.length() - 1] != '.')
+		{
+			sentence += word;
+			value += wordMap.at(word);
+		}
+		else {
+			word = word.substr(0, (word.length() - 1));
+			sentence += word;
+			value += wordMap.at(word);
+			sentenceMap.insert({ sentence, value });
+			sentence = "";
+		}
+	}
 }
 
+//iterates through and prints the word hashmap
 void wordOccurance(unordered_map<string, int> &wordMap) {
 	unordered_map<string, int>::iterator it;
 	for (it = wordMap.begin(); it != wordMap.end(); it++) {
@@ -32,11 +53,13 @@ void wordOccurance(unordered_map<string, int> &wordMap) {
 	return;
 }
 
-
-//wordImportance determines the importance of each word
-void wordImportance(string word) {
-
-
+//iterates through and prints the sentences
+void sentenceOccurance(unordered_map<string, int> &sentenceMap) {
+	unordered_map<string, int>::iterator it;
+	for (it = sentenceMap.begin(); it != sentenceMap.end(); it++) {
+		cout << "Sentence: " << it->first << "    " << "Value: " << it->second << endl;
+	}
+	return;
 }
 
 //sentenceImportance determines the importance of each sentence
@@ -57,7 +80,7 @@ int main(int argc, char *argv[]){
     myfile.open(argv[1]);//opens the file name provided on the command line
 	summarize(myfile, wordMap, sentenceMap);
 	wordOccurance(wordMap);
-
+	sentenceOccurance(sentenceMap);
 }
 
 /*
