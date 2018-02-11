@@ -42,6 +42,7 @@ int main(int argc, char *argv[]){
 void isDefining(ifstream &myfile, ofstream &outfile){
     //checks if sentence contains the word is. The chances are, all letters in the sentence after is are defining something in the first part of the sentence
     string firsthalf = ""; //first part of the sentence to be used when forming a question
+    string secondhalf = "";
     string curword;//current word in the sentence
     myfile >> curword;
     firsthalf += curword + " ";
@@ -52,8 +53,10 @@ void isDefining(ifstream &myfile, ofstream &outfile){
         if(curword.back() == '!' || curword.back() == '.' || curword.back() == '?'){//if te
             if(found == true && firsthalf.length() > 60 ){
                 outfile << firsthalf << "_______?" << endl;
+                outfile << secondhalf << endl << endl;
             }
             myfile >> curword;
+            secondhalf = "";
             firsthalf = curword + " ";//resets first half
             found = false;
         }
@@ -63,6 +66,7 @@ void isDefining(ifstream &myfile, ofstream &outfile){
         }
         else if(found == true){
             myfile >> curword;
+            secondhalf += curword + " ";
         }
         else{
             myfile >> curword;
