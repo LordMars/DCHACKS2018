@@ -10,7 +10,7 @@ int main()
 
 	//string textbook_name = "molecularcellbiology.pdf";
 	int terminal_return_code;
-	terminal_return_code = system("pdftotext textbook.pdf");
+	terminal_return_code = system("pdftotext -raw -nopgbrk textbook.pdf");
 
 	return 0;
 }
