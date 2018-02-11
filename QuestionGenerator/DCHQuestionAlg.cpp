@@ -27,13 +27,15 @@ int main(int argc, char *argv[]){
 
     myfile.open(argv[1]);//opens the file name provided on the command line
     outfile.open("output.txt");
+
+    summarize(myfile, wordMap, sentenceMap);
+    wordOccurance(wordMap);
+    
     myfile.close();
     myfile.open(argv[1]);
 
-    summarize(myfile, wordMap, sentenceMap);
-	wordOccurance(wordMap);
     isDefining(myfile, outfile);
-    //here is where the code determines word importance by occurence count
+    myfile.close();
 
 }
 
@@ -48,7 +50,7 @@ void isDefining(ifstream &myfile, ofstream &outfile){
 
     while(myfile){
         if(curword.back() == '!' || curword.back() == '.' || curword.back() == '?'){//if te
-            if(found == true){
+            if(found == true && firsthalf.length() > 60 ){
                 outfile << firsthalf << "_______?" << endl;
             }
             myfile >> curword;
