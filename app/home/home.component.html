@@ -1,0 +1,35 @@
+<!--<header class="center">-->
+<body>
+<form>
+
+  <md-card class="example-card">
+    <md-card-header>
+      <div class="center">
+      <md-card-title> <img src=""> </md-card-title>
+    </div>
+     </md-card-header>
+
+    <md-card-content>
+      <div fxLayout="row" fxLayoutAlign="center center">
+      <md-input-container class="inputsize">
+          <input mdInput
+                 [(ngModel)]="term"
+                 name="term"
+                 placeholder="Select a file from your computer to open!"
+                 type="text"
+                 align="middle"
+                 required>
+        </md-input-container>
+
+        <md-card-actions >
+           <a md-mini-fab (click)="search()" [routerLink]="['/main', term]">
+           <md-icon>search</md-icon></a>
+        </md-card-actions>
+      </div>
+    </md-card-content>
+
+  </md-card>
+
+ 
+</form>
+</body>
