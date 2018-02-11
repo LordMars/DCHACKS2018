@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <unordered_map>
 
 using namespace std;
@@ -10,7 +9,8 @@ void isDefining(ifstream&, ofstream&);//determines if a statement is defining so
 void summarize(ifstream &myfile, unordered_map<string, int> &wordMap, unordered_map<string, int > &sentenceMap); 
 void wordOccurance(unordered_map<string, int> &wordMap);
 void wordImportance(string word);
-void sentenceImportance();   
+void sentenceOccurance(unordered_map<string, int> &sentenceMap); 
+//void sentenceImportance();   
 
 
 int main(int argc, char *argv[]){
@@ -30,6 +30,7 @@ int main(int argc, char *argv[]){
 
     summarize(myfile, wordMap, sentenceMap);
     wordOccurance(wordMap);
+    sentenceOccurance(sentenceMap);
     
     myfile.close();
     myfile.open(argv[1]);
@@ -81,25 +82,47 @@ void isDefining(ifstream &myfile, ofstream &outfile){
         }
     }
 }
+//summarize gets the summarized version of the text
 
 void summarize(ifstream &myfile, unordered_map<string, int> &wordMap, unordered_map<string, int > &sentenceMap) {
 	string word = "";
 	string sentence = "";
-
+	int value = 0;
+	//get word values
 	while (myfile >> word)
 	{
+		if (word[word.length() - 1] == '.')
+		{
+			word = word.substr(0, (word.length() - 1));
+		}
 		if (wordMap.find(word) == wordMap.end()){ //Word not in wordmap. Therefore add it.
 			wordMap.insert({ word, 1 });
-			//sentence += word;
 		}
 		else{ //otherwise add the new key to the hashmap and set the value at 1
 			wordMap.at(word) += 1;
-			//sentence += word;
 		}
 	}
-	//sentenceMap(sentence);
+
+	myfile.clear();
+	myfile.seekg(0, ios::beg);
+	//get sentence values
+	while (myfile >> word) {
+		if (word[word.length() - 1] != '.')
+		{
+			sentence += word;
+			value += wordMap.at(word);
+		}
+		else {
+			word = word.substr(0, (word.length() - 1));
+			sentence += word;
+			value += wordMap.at(word);
+			sentenceMap.insert({ sentence, value });
+			sentence = "";
+		}
+	}
 }
 
+//iterates through and prints the word hashmap
 void wordOccurance(unordered_map<string, int> &wordMap) {
 	unordered_map<string, int>::iterator it;
 	for (it = wordMap.begin(); it != wordMap.end(); it++) {
@@ -108,21 +131,20 @@ void wordOccurance(unordered_map<string, int> &wordMap) {
 	return;
 }
 
-bool isBold(char letter){//will determine if a character is bolded or not
-
+//iterates through and prints the sentences
+void sentenceOccurance(unordered_map<string, int> &sentenceMap) {
+	unordered_map<string, int>::iterator it;
+	for (it = sentenceMap.begin(); it != sentenceMap.end(); it++) {
+		cout << "Sentence: " << it->first << "    " << "Value: " << it->second << endl;
+	}
+	return;
 }
 
-//wordImportance determines the importance of each word
-void wordImportance(string word) {
-
-
-}
-
-//sentenceImportance determines the importance of each sentence
+/*//sentenceImportance determines the importance of each sentence
 void sentenceImportance() {
 
 
-}
+}*/
 
 /*
 � Ranking sentences by importance using the core algorithm.
